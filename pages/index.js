@@ -23,14 +23,18 @@ const Banner = ({ purpose, title1, title2, desc1, desc2, buttonText, linkName, i
       </Text>
       <Button fontSize="xl">
         <Link href={linkName}>
-          {buttonText}
+          <a>
+            {buttonText}
+          </a>
         </Link>
       </Button>
     </Box>
   </Flex>
 )
 
-export default function Home() {
+export default function Home({ propertiesForRent, propertiesForSale }) {
+  console.log(propertiesForRent, propertiesForSale)
+  
   return (
     <box>
       <Banner 
@@ -40,7 +44,7 @@ export default function Home() {
         desc1="Explore Apartments, Villas, Homes"
         desc2="and more"
         buttonText="Explore Renting"
-        LinkName="/search?purpose=for-rent"
+        linkName="/search?purpose=for-rent"
         imageUrl="https://bayut-production.s3.eu-central-1.amazonaws.com/image/145426814/33973352624c48628e41f2ec460faba4"
       />
       <Flex flexWrap="wrap">
@@ -66,4 +70,11 @@ export default function Home() {
 export async function getStaticProps() {
   const propertyForSale = await fetchApi(`${baseUrl}/properties/list?locationExternalIDs=5002&purpose=for-sale&hitsPerPage=6`)
   const propertyForRent = await fetchApi(`${baseUrl}/properties/list?locationExternalIDs=5002&purpose=for-rent&hitsPerPage=6`)
+
+  return {
+    props: {
+      propertiesForSale: propertyForSale?.hits,
+      propertiesForRent: propertyForRent?.hits,
+    }
+  }
 }
