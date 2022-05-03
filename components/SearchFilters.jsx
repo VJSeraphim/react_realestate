@@ -7,7 +7,7 @@ import Image from 'next-image'
 import { filterData, getFilterValues } from '../utils/filterData' 
 
 const SearchFilters = () => {
-    const [filters, setFilters] = useState(FilterData)
+    const [filters, setFilters] = useState(filterData)
 
     const searchProperties = (filterValues) => {
         const path = router.pathname
