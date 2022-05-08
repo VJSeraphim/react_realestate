@@ -64,11 +64,60 @@ const SearchFilters = () => {
                 </Box>
             ))}
             <Flex flexDir={column}>
-                <Button>
-
+                <Button 
+                    onClick={() => setShowLocations(!showLocations)}
+                    border='1px'
+                    borderColor='gray.200'
+                    marginTop='2'
+                >
+                    Search Location
                 </Button>
                 {showLocations && (
-                    
+                    <Flex flexDir='column' pos='relative' paddingTop='2'>
+                        <Input
+                            placeholder='What is on your mind?'
+                            value={searchTerm}
+                            w='300px'
+                            focusBorderColor='gray.300'
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        {searchTerm !== '' && (
+                            <Icon 
+                                as={MdCancel}
+                                pos='absolute'
+                                cursor='pointer'
+                                right='5'
+                                top='5'
+                                zIndex='100'
+                                onClick={() => setSearchTerm('')}
+                            />
+                        )}
+                        { loading && <Spinner margin='auto' marginTop={'3'}/>}
+                        { showLocations && (
+                            <Box height='300px' overflow='auto'>
+                                { locationData?.map((loc) => (
+                                    <Box
+                                        key={loc.id}
+                                        onClick={() => {
+                                            searchProperties({ locationExternalIDs: loc.externalId})
+                                            setShowLocations(false)
+                                            setSearchTerm(loc.name)
+                                        }}
+                                    >
+                                        <Text 
+                                            cursor='pointer'
+                                            bg='gray.200'
+                                            p='2'
+                                            borderBottom='1px'
+                                            borderColor='gray.100'
+                                        >
+                                            {loc.name}
+                                        </Text>
+                                    </Box>
+                                ))}
+                            </Box>
+                        )}
+                    </Flex>
                 )}
             </Flex>
         </Flex>
